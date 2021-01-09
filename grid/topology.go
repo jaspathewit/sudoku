@@ -1,11 +1,11 @@
 package grid
 
-import "fmt"
-
 // methods implemented by a topology
 type Topology interface {
 	// create a new grid in this topology
 	// NewGrid() (*Grid, error)
+	Rows() int
+	Cols() int
 
 	// get the gridrefs for the topology
 	GridRefs() []string
@@ -34,5 +34,5 @@ func (ps PeerSet) FindPeersFor(ref string) (Peers, error) {
 		}
 	}
 
-	return nil, fmt.Errorf("something wrong could not find peers for %s", ref)
+	return nil, nil //fmt.Errorf("something wrong could not find peers for %s", ref)
 }

@@ -5,6 +5,14 @@ type Quasidoku struct{}
 
 var _ Topology = Quasidoku{}
 
+func (t Quasidoku) Rows() int {
+	return 9
+}
+
+func (t Quasidoku) Cols() int {
+	return 9
+}
+
 func (t Quasidoku) GridRefs() []string {
 	var result = []string{"1_1", "1_2", "1_3", "1_4", "1_5", "1_6",
 		"2_1", "2_2", "2_3", "2_4", "2_5", "2_6",
@@ -70,76 +78,3 @@ func (t Quasidoku) ColPeers() PeerSet {
 
 	return result
 }
-
-//func (q Quasidoku) NewGrid() (*Grid, error) {
-//	result := NewGrid()
-//
-//	result.Topology = q
-//
-//	for _, r := range quasidokuGridRefs {
-//		c := NewCell(r)
-//
-//		neighbourPeers, err := quasidokuNeigbourPeers.FindPeersFor(c.Ref)
-//		if err != nil {
-//			return nil, fmt.Errorf("neighbour: %s", err)
-//		}
-//		c.NeighbourPeers = neighbourPeers
-//
-//		rowPeers, err := quasidokuRowPeers.FindPeersFor(c.Ref)
-//		if err != nil {
-//			return nil, fmt.Errorf("row: %s", err)
-//		}
-//		c.RowPeers = rowPeers
-//
-//		colPeers, err := quasidokuColPeers.FindPeersFor(c.Ref)
-//		if err != nil {
-//			return nil, fmt.Errorf("col: %s", err)
-//		}
-//		c.ColPeers = colPeers
-//
-//		// add the cell
-//		result.Add(c)
-//	}
-//	return result, nil
-//}
-
-//// return the grid as a printable string
-//func (q Quasidoku) AsString(g *Grid) string {
-//	sb := strings.Builder{}
-//
-//	sb.WriteString("|~~~:~~~;~~~|~~~:~~~;~~~|~~~:~~~;~~~|\n")
-//
-//	for row := 1; row < 10; row++ {
-//		sb.WriteString("|")
-//
-//		for col := 1; col < 10; col++ {
-//			ref := fmt.Sprintf("%d_%d", row, col)
-//
-//			cell, ok := g.Get(ref)
-//			if !ok {
-//				sb.WriteString("   ")
-//			} else {
-//				sb.WriteString(cell.Value())
-//				if cell.Label() == "" {
-//					sb.WriteString(" ")
-//				} else {
-//					sb.WriteString(cell.Label())
-//				}
-//				sb.WriteString(" ")
-//			}
-//
-//			if col%3 == 0 {
-//				sb.WriteString("|")
-//			} else {
-//				sb.WriteString(":")
-//			}
-//
-//		}
-//		if row%3 == 0 {
-//			sb.WriteString("\n|~~~:~~~;~~~|~~~:~~~;~~~|~~~:~~~;~~~|\n")
-//		} else {
-//			sb.WriteString("\n|---:---;---|---:---;---|---:---;---|\n")
-//		}
-//	}
-//	return sb.String()
-//}

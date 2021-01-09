@@ -192,12 +192,12 @@ func (g *Grid) GetRefWithFewestPossibles() string {
 func (g *Grid) String() string {
 	sb := strings.Builder{}
 
-	sb.WriteString("|~~~:~~~;~~~|~~~:~~~;~~~|~~~:~~~;~~~|\n")
+	sb.WriteString("|~~~:~~~;~~~|~~~:~~~;~~~|~~~:~~~;~~~|~~~:~~~;~~~|~~~:~~~;~~~|~~~:~~~;~~~|~~~:~~~;~~~|~~~:~~~;~~~|~~~:~~~;~~~|\n")
 
-	for row := 1; row < 10; row++ {
+	for row := 1; row < g.Topology.Rows()+1; row++ {
 		sb.WriteString("|")
 
-		for col := 1; col < 10; col++ {
+		for col := 1; col < g.Topology.Cols()+1; col++ {
 			ref := fmt.Sprintf("%d_%d", row, col)
 
 			cell, ok := g.Get(ref)
@@ -221,9 +221,9 @@ func (g *Grid) String() string {
 
 		}
 		if row%3 == 0 {
-			sb.WriteString("\n|~~~:~~~;~~~|~~~:~~~;~~~|~~~:~~~;~~~|\n")
+			sb.WriteString("\n|~~~:~~~;~~~|~~~:~~~;~~~|~~~:~~~;~~~|~~~:~~~;~~~|~~~:~~~;~~~|~~~:~~~;~~~|~~~:~~~;~~~|~~~:~~~;~~~|~~~:~~~;~~~|\n")
 		} else {
-			sb.WriteString("\n|---:---;---|---:---;---|---:---;---|\n")
+			sb.WriteString("\n|---:---;---|---:---;---|---:---;---|---:---;---|---:---;---|---:---;---|---:---;---|---:---;---|---:---;---|\n")
 		}
 	}
 	return sb.String()

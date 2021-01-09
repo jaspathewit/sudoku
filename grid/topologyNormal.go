@@ -5,6 +5,14 @@ type Normal struct{}
 
 var _ Topology = Normal{}
 
+func (t Normal) Rows() int {
+	return 9
+}
+
+func (t Normal) Cols() int {
+	return 9
+}
+
 func (t Normal) GridRefs() []string {
 	var result = []string{"1_1", "1_2", "1_3", "1_4", "1_5", "1_6", "1_7", "1_8", "1_9",
 		"2_1", "2_2", "2_3", "2_4", "2_5", "2_6", "2_7", "2_8", "2_9",
