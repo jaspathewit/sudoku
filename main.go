@@ -8,7 +8,8 @@ import (
 func main() {
 	// g, err := puzzelLibelle()
 	// g, err := puzzelQuasidoku()
-	g, err := puzzelLovedoku()
+	//g, err := puzzelLovedoku()
+	g, err := puzzelTriadoku()
 	if err != nil {
 		log.Fatalf("failed to create grid for puzzel %s", err)
 	}
@@ -161,6 +162,51 @@ func puzzelLovedoku() (*grid.Grid, error) {
 
 	g.SetLabel("4_4", "F")
 	g.SetLabel("8_12", "C")
+
+	return g, nil
+}
+
+// puzzelTriadoku
+func puzzelTriadoku() (*grid.Grid, error) {
+
+	topology := grid.Triadoku{}
+
+	g, err := grid.NewGrid(topology)
+	if err != nil {
+		return nil, err
+	}
+
+	// set up the starting values
+	g.Set("1_3", "6")
+	g.Set("1_11", "8")
+	g.Set("2_20", "6")
+
+	g.Set("3_11", "3")
+	g.Set("3_21", "7")
+	g.Set("4_5", "3")
+	g.Set("4_24", "2")
+	g.Set("5_5", "5")
+	g.Set("5_22", "5")
+	g.Set("6_14", "4")
+	g.Set("6_22", "4")
+
+	g.Set("7_7", "3")
+	g.Set("7_8", "4")
+	g.Set("7_16", "4")
+	g.Set("7_25", "1")
+	g.Set("7_27", "9")
+	g.Set("8_7", "8")
+	g.Set("8_9", "7")
+	g.Set("8_18", "1")
+	g.Set("9_18", "5")
+
+	g.SetLabel("3_2", "D")
+	g.SetLabel("4_14", "G")
+	g.SetLabel("5_24", "I")
+	g.SetLabel("3_19", "E")
+
+	g.SetLabel("9_16", "H")
+	g.SetLabel("9_25", "F")
 
 	return g, nil
 }

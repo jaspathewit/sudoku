@@ -128,6 +128,7 @@ func (g *Grid) EliminatePossibleValueFor(refs []string, value string) {
 		// remove it as a possible value
 		c.EliminatePossibleValue(value)
 	}
+
 }
 
 // eliminate possible returns true if there was at least one cell that could be set
