@@ -5,9 +5,17 @@ import "fmt"
 // methods implemented by a topology
 type Topology interface {
 	// create a new grid in this topology
-	NewGrid() (*Grid, error)
-	// string representation of a grid in this topology
-	AsString(g *Grid) string
+	// NewGrid() (*Grid, error)
+
+	// get the gridrefs for the topology
+	GridRefs() []string
+
+	// the neigbour peers
+	NeigbourPeers() PeerSet
+	// the Row peers
+	RowPeers() PeerSet
+	// the Col Peers
+	ColPeers() PeerSet
 }
 
 // a type for maintaining a slice of cell references.

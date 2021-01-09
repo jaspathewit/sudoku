@@ -3,6 +3,7 @@ package grid
 import (
 	"fmt"
 	"log"
+	"strings"
 )
 
 // Contains the types and operations that can be performed on a "grid"
@@ -17,17 +18,42 @@ type Grid struct {
 	Cells     []string
 }
 
-func NewGrid() *Grid {
-	result := Grid{}
+// create a new grid of the given topology
+func NewGrid(topology Topology) (*Grid, error) {
+	result := Grid{Topology: topology}
 	result.cellIndex = make(map[string]*Cell)
 	result.Cells = make([]string, 0)
 
-	return &result
+	for _, r := range topology.GridRefs() {
+		c := NewCell(r)
+
+		neighbourPeers, err := topology.NeigbourPeers().FindPeersFor(c.Ref)
+		if err != nil {
+			return nil, fmt.Errorf("neighbour: %s", err)
+		}
+		c.NeighbourPeers = neighbourPeers
+
+		rowPeers, err := topology.RowPeers().FindPeersFor(c.Ref)
+		if err != nil {
+			return nil, fmt.Errorf("row: %s", err)
+		}
+		c.RowPeers = rowPeers
+
+		colPeers, err := topology.ColPeers().FindPeersFor(c.Ref)
+		if err != nil {
+			return nil, fmt.Errorf("col: %s", err)
+		}
+		c.ColPeers = colPeers
+
+		// add the cell
+		result.Add(c)
+	}
+	return &result, nil
 }
 
 // Clone clones a grid
 func (g *Grid) Clone() (*Grid, error) {
-	result, err := g.Topology.NewGrid()
+	result, err := NewGrid(g.Topology)
 	if err != nil {
 		return nil, err
 	}
@@ -69,12 +95,22 @@ func (g *Grid) Set(ref string, value string) error {
 		return fmt.Errorf("set: cannot find cell %s", ref)
 	}
 
-	if c.Fixed() {
-		return fmt.Errorf("set: failed cell %s is already fixed", ref)
-	}
-
 	// set the value adjusts possible values of neighbour cells
 	c.SetValue(value)
+
+	g.cellIndex[c.Ref] = c
+
+	return nil
+}
+
+// function sets a cells label
+func (g *Grid) SetLabel(ref string, label string) error {
+	c, ok := g.Get(ref)
+	if !ok {
+		return fmt.Errorf("set: cannot find cell %s", ref)
+	}
+
+	c.SetLabel(label)
 
 	g.cellIndex[c.Ref] = c
 
@@ -154,6 +190,41 @@ func (g *Grid) GetRefWithFewestPossibles() string {
 
 // return the grid as a printable string
 func (g *Grid) String() string {
-	result := g.Topology.AsString(g)
-	return result
+	sb := strings.Builder{}
+
+	sb.WriteString("|~~~:~~~;~~~|~~~:~~~;~~~|~~~:~~~;~~~|\n")
+
+	for row := 1; row < 10; row++ {
+		sb.WriteString("|")
+
+		for col := 1; col < 10; col++ {
+			ref := fmt.Sprintf("%d_%d", row, col)
+
+			cell, ok := g.Get(ref)
+			if !ok {
+				sb.WriteString("   ")
+			} else {
+				sb.WriteString(cell.Value())
+				if cell.Label() == "" {
+					sb.WriteString(" ")
+				} else {
+					sb.WriteString(cell.Label())
+				}
+				sb.WriteString(" ")
+			}
+
+			if col%3 == 0 {
+				sb.WriteString("|")
+			} else {
+				sb.WriteString(":")
+			}
+
+		}
+		if row%3 == 0 {
+			sb.WriteString("\n|~~~:~~~;~~~|~~~:~~~;~~~|~~~:~~~;~~~|\n")
+		} else {
+			sb.WriteString("\n|---:---;---|---:---;---|---:---;---|\n")
+		}
+	}
+	return sb.String()
 }

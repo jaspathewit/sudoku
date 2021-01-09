@@ -1,8 +1,8 @@
 package main
 
 import (
-	"sudoku/grid"
 	"log"
+	"sudoku/grid"
 )
 
 func main() {
@@ -42,7 +42,7 @@ func puzzelLibelle() (*grid.Grid, error) {
 
 	topology := grid.Normal{}
 
-	g, err := topology.NewGrid()
+	g, err := grid.NewGrid(topology)
 	if err != nil {
 		return nil, err
 	}
@@ -83,7 +83,7 @@ func puzzelQuasidoku() (*grid.Grid, error) {
 
 	topology := grid.Quasidoku{}
 
-	g, err := topology.NewGrid()
+	g, err := grid.NewGrid(topology)
 	if err != nil {
 		return nil, err
 	}
@@ -106,6 +106,10 @@ func puzzelQuasidoku() (*grid.Grid, error) {
 	g.Set("7_6", "4")
 	g.Set("9_4", "9")
 	g.Set("9_5", "3")
+
+	g.SetLabel("1_3", "C")
+	g.SetLabel("6_4", "B")
+	g.SetLabel("7_5", "A")
 
 	return g, nil
 }

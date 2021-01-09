@@ -34,8 +34,7 @@ type Cell struct {
 	// the possible values that this cell could have
 	possibleValues Values
 
-	// Fixed determines if the value of the cell has been determined
-	fixed bool
+	label string
 }
 
 // Create a NewCell at the given row and col
@@ -66,7 +65,7 @@ func (c *Cell) Clone() *Cell {
 
 	// clone the current value
 	result.value = c.value
-	result.fixed = c.fixed
+	result.label = c.label
 
 	// clone the neighbours
 	result.NeighbourPeers = c.NeighbourPeers
@@ -74,16 +73,6 @@ func (c *Cell) Clone() *Cell {
 	result.ColPeers = c.ColPeers
 
 	return result
-}
-
-// SetFixed fix the value in a cell
-func (c *Cell) SetFixed() {
-	c.fixed = true
-}
-
-// Fixed true if the value in the cell is fixed
-func (c *Cell) Fixed() bool {
-	return c.fixed
 }
 
 // Value the current value in a cell
@@ -100,9 +89,19 @@ func (c *Cell) SetValue(value string) {
 	c.Grid.EliminatePossibleValueFor(c.RowPeers, value)
 	c.Grid.EliminatePossibleValueFor(c.ColPeers, value)
 
-	c.SetFixed()
 	// we have no more possible values
 	c.possibleValues = make(Values)
+}
+
+// Label the current label of a cell
+func (c *Cell) Label() string {
+	return c.label
+}
+
+// SetValue sets the current value of this cell
+// removes the value as a possible from all "neghbours"
+func (c *Cell) SetLabel(label string) {
+	c.label = label
 }
 
 // EliminatePossibleValue eliminates the given possible value from this cell
@@ -112,7 +111,7 @@ func (c *Cell) EliminatePossibleValue(value string) {
 
 // PossibleValues returns the current possible for this cell as a []string
 func (c *Cell) PossibleValues() []string {
-	if c.Fixed() {
+	if len(c.possibleValues) == 0 {
 		return nil
 	}
 
