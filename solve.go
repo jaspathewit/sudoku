@@ -1,8 +1,8 @@
 package main
 
 import (
-	"sudoku/grid"
 	"fmt"
+	"sudoku/grid"
 )
 
 // Solve solves a sudoku passed as a grid

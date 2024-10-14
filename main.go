@@ -8,7 +8,7 @@ import (
 func main() {
 	// g, err := puzzelLibelle()
 	// g, err := puzzelQuasidoku()
-	//g, err := puzzelLovedoku()
+	// g, err := puzzelLovedoku()
 	g, err := puzzelTriadoku()
 	if err != nil {
 		log.Fatalf("failed to create grid for puzzel %s", err)
